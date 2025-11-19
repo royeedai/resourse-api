@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章管理API接口文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .api-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .get { background: #28a745; color: white; }
+        .post { background: #007bff; color: white; }
+        .put { background: #ffc107; color: #333; }
+        .delete { background: #dc3545; color: white; }
+        .endpoint {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        .description {
+            margin: 15px 0;
+            color: #666;
+        }
+        .params {
+            margin-top: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .required {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .optional {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 文章管理API接口文档</h1>
+        
+        <div style="margin-bottom: 30px; padding: 15px; background: #e7f3ff; border-left: 4px solid #2196F3; border-radius: 4px;">
+            <strong>基础URL:</strong> <code>http://localhost:8080/api</code><br>
+            <strong>Content-Type:</strong> <code>application/json</code>
+        </div>
+
+        <!-- 文章接口 -->
+        <h2>📝 文章接口</h2>
+
+        <!-- 1. 获取文章列表 -->
+        <div class="api-item">
+            <div>
+                <span class="method get">GET</span>
+                <span class="endpoint">/articles</span>
+            </div>
+            <div class="description">
+                <strong>获取文章列表</strong> - 支持分页和多种筛选条件
+            </div>
+            <div class="params">
+                <h3>请求参数</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>类型</th>
+                            <th>必填</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>page</td>
+                            <td>Integer</td>
+                            <td><span class="optional">否</span></td>
+                            <td>页码，从0开始，默认0</td>
+                        </tr>
+                        <tr>
+                            <td>size</td>
+                            <td>Integer</td>
+                            <td><span class="optional">否</span></td>
+                            <td>每页数量，默认10</td>
+                        </tr>
+                        <tr>
+                            <td>status</td>
+                            <td>String</td>
+                            <td><span class="optional">否</span></td>
+                            <td>状态筛选：PUBLISHED（已发布）、DRAFT（草稿）、ARCHIVED（已归档）</td>
+                        </tr>
+                        <tr>
+                            <td>categoryId</td>
+                            <td>Long</td>
+                            <td><span class="optional">否</span></td>
+                            <td>分类ID筛选</td>
+                        </tr>
+                        <tr>
+                            <td>articleType</td>
+                            <td>String</td>
+                            <td><span class="optional">否</span></td>
+                            <td>文章类型筛选：NEWS（新闻）、BLOG（博客）、TUTORIAL（教程）等</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3>请求示例</h3>
+                <div class="code-block">
+GET /api/articles?page=0&size=10&status=PUBLISHED&categoryId=1&articleType=BLOG
+                </div>
+            </div>
+            <div>
+                <h3>响应示例</h3>
+                <div class="code-block">{
+  "content": [
+    {
+      "id": 1,
+      "title": "Spring Boot 3 新特性介绍",
+      "content": "Spring Boot 3 带来了许多新特性...",
+      "coverImage": "https://example.com/images/spring-boot-3.jpg",
+      "images": [
+        "https://example.com/images/spring-boot-3-1.jpg",
+        "https://example.com/images/spring-boot-3-2.jpg"
+      ],
+      "categoryId": 1,
+      "categoryName": "技术",
+      "viewCount": 100,
+      "status": "PUBLISHED",
+      "articleType": "TUTORIAL",
+      "createTime": "2024-01-01T10:00:00",
+      "updateTime": "2024-01-01T10:00:00"
+    }
+  ],
+  "page": 0,
+  "size": 10,
+  "totalElements": 50,
+  "totalPages": 5,
+  "hasNext": true,
+  "hasPrevious": false
+}</div>
+            </div>
+        </div>
+
+        <!-- 2. 获取文章详情 -->
+        <div class="api-item">
+            <div>
+                <span class="method get">GET</span>
+                <span class="endpoint">/articles/{id}</span>
+            </div>
+            <div class="description">
+                <strong>获取文章详情</strong> - 查看指定文章的完整信息，访问后自动增加浏览量
+            </div>
+            <div class="params">
+                <h3>路径参数</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>类型</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>id</td>
+                            <td>Long</td>
+                            <td>文章ID</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3>请求示例</h3>
+                <div class="code-block">
+GET /api/articles/1
+                </div>
+            </div>
+            <div>
+                <h3>响应示例</h3>
+                <div class="code-block">{
+  "id": 1,
+  "title": "Spring Boot 3 新特性介绍",
+  "content": "Spring Boot 3 带来了许多新特性和改进...",
+  "coverImage": "https://example.com/images/spring-boot-3.jpg",
+  "images": [
+    "https://example.com/images/spring-boot-3-1.jpg",
+    "https://example.com/images/spring-boot-3-2.jpg",
+    "https://example.com/images/spring-boot-3-3.jpg"
+  ],
+  "categoryId": 1,
+  "categoryName": "技术",
+  "viewCount": 101,
+  "status": "PUBLISHED",
+  "articleType": "TUTORIAL",
+  "createTime": "2024-01-01T10:00:00",
+  "updateTime": "2024-01-01T10:00:00"
+}</div>
+            </div>
+        </div>
+
+        <!-- 3. 创建文章 -->
+        <div class="api-item">
+            <div>
+                <span class="method post">POST</span>
+                <span class="endpoint">/articles</span>
+            </div>
+            <div class="description">
+                <strong>创建文章</strong> - 创建一篇新文章
+            </div>
+            <div class="params">
+                <h3>请求体参数</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>类型</th>
+                            <th>必填</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>title</td>
+                            <td>String</td>
+                            <td><span class="required">是</span></td>
+                            <td>文章标题</td>
+                        </tr>
+                        <tr>
+                            <td>content</td>
+                            <td>String</td>
+                            <td><span class="optional">否</span></td>
+                            <td>文章内容</td>
+                        </tr>
+                        <tr>
+                            <td>coverImage</td>
+                            <td>String</td>
+                            <td><span class="optional">否</span></td>
+                            <td>封面图片URL</td>
+                        </tr>
+                        <tr>
+                            <td>images</td>
+                            <td>Array&lt;String&gt;</td>
+                            <td><span class="optional">否</span></td>
+                            <td>文章图片URL数组（支持多图）</td>
+                        </tr>
+                        <tr>
+                            <td>categoryId</td>
+                            <td>Long</td>
+                            <td><span class="optional">否</span></td>
+                            <td>分类ID</td>
+                        </tr>
+                        <tr>
+                            <td>status</td>
+                            <td>String</td>
+                            <td><span class="optional">否</span></td>
+                            <td>状态，默认PUBLISHED</td>
+                        </tr>
+                        <tr>
+                            <td>articleType</td>
+                            <td>String</td>
+                            <td><span class="optional">否</span></td>
+                            <td>文章类型</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3>请求示例</h3>
+                <div class="code-block">POST /api/articles
+Content-Type: application/json
+
+{
+  "title": "新文章标题",
+  "content": "文章内容...",
+  "coverImage": "https://example.com/images/cover.jpg",
+  "images": [
+    "https://example.com/images/img1.jpg",
+    "https://example.com/images/img2.jpg"
+  ],
+  "categoryId": 1,
+  "status": "PUBLISHED",
+  "articleType": "BLOG"
+}</div>
+            </div>
+        </div>
+
+        <!-- 4. 更新文章 -->
+        <div class="api-item">
+            <div>
+                <span class="method put">PUT</span>
+                <span class="endpoint">/articles/{id}</span>
+            </div>
+            <div class="description">
+                <strong>更新文章</strong> - 更新指定文章的信息
+            </div>
+            <div>
+                <h3>请求示例</h3>
+                <div class="code-block">PUT /api/articles/1
+Content-Type: application/json
+
+{
+  "title": "更新后的标题",
+  "content": "更新后的内容...",
+  "images": ["https://example.com/images/new-img.jpg"],
+  "status": "PUBLISHED"
+}</div>
+            </div>
+        </div>
+
+        <!-- 5. 删除文章 -->
+        <div class="api-item">
+            <div>
+                <span class="method delete">DELETE</span>
+                <span class="endpoint">/articles/{id}</span>
+            </div>
+            <div class="description">
+                <strong>删除文章</strong> - 删除指定文章
+            </div>
+            <div>
+                <h3>请求示例</h3>
+                <div class="code-block">
+DELETE /api/articles/1
+                </div>
+            </div>
+        </div>
+
+        <!-- 分类接口 -->
+        <h2>📂 分类接口</h2>
+
+        <!-- 1. 获取所有分类 -->
+        <div class="api-item">
+            <div>
+                <span class="method get">GET</span>
+                <span class="endpoint">/categories</span>
+            </div>
+            <div class="description">
+                <strong>获取所有分类</strong> - 返回所有文章分类列表
+            </div>
+            <div>
+                <h3>响应示例</h3>
+                <div class="code-block">[
+  {
+    "id": 1,
+    "name": "技术",
+    "description": "技术相关文章",
+    "createTime": "2024-01-01T10:00:00",
+    "updateTime": "2024-01-01T10:00:00"
+  },
+  {
+    "id": 2,
+    "name": "生活",
+    "description": "生活相关文章",
+    "createTime": "2024-01-01T10:00:00",
+    "updateTime": "2024-01-01T10:00:00"
+  }
+]</div>
+            </div>
+        </div>
+
+        <!-- 2. 获取分类详情 -->
+        <div class="api-item">
+            <div>
+                <span class="method get">GET</span>
+                <span class="endpoint">/categories/{id}</span>
+            </div>
+            <div class="description">
+                <strong>获取分类详情</strong> - 获取指定分类的详细信息
+            </div>
+        </div>
+
+        <!-- 3. 创建分类 -->
+        <div class="api-item">
+            <div>
+                <span class="method post">POST</span>
+                <span class="endpoint">/categories</span>
+            </div>
+            <div class="description">
+                <strong>创建分类</strong> - 创建新的文章分类
+            </div>
+            <div>
+                <h3>请求示例</h3>
+                <div class="code-block">POST /api/categories
+Content-Type: application/json
+
+{
+  "name": "新分类",
+  "description": "分类描述"
+}</div>
+            </div>
+        </div>
+
+        <!-- 4. 更新分类 -->
+        <div class="api-item">
+            <div>
+                <span class="method put">PUT</span>
+                <span class="endpoint">/categories/{id}</span>
+            </div>
+            <div class="description">
+                <strong>更新分类</strong> - 更新指定分类的信息
+            </div>
+        </div>
+
+        <!-- 5. 删除分类 -->
+        <div class="api-item">
+            <div>
+                <span class="method delete">DELETE</span>
+                <span class="endpoint">/categories/{id}</span>
+            </div>
+            <div class="description">
+                <strong>删除分类</strong> - 删除指定分类
+            </div>
+        </div>
+
+        <!-- 错误响应 -->
+        <h2>❌ 错误响应</h2>
+        <div class="api-item">
+            <div class="description">
+                当请求失败时，API会返回以下格式的错误响应：
+            </div>
+            <div>
+                <h3>错误响应格式</h3>
+                <div class="code-block">{
+  "success": false,
+  "message": "错误信息",
+  "code": 400
+}</div>
+            </div>
+            <div>
+                <h3>常见错误码</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>HTTP状态码</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>400</td>
+                            <td>请求参数错误</td>
+                        </tr>
+                        <tr>
+                            <td>404</td>
+                            <td>资源不存在</td>
+                        </tr>
+                        <tr>
+                            <td>500</td>
+                            <td>服务器内部错误</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 5px; text-align: center; color: #666;">
+            <p>文档版本: 1.0.0 | 最后更新: 2024年</p>
+        </div>
+    </div>
+</body>
+</html>
