@@ -21,7 +21,8 @@ public class ArticleController {
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) String articleType) {
+            @RequestParam(required = false) String articleType,
+            @RequestParam(required = false) String tag) {
         
         ArticleListRequest request = new ArticleListRequest();
         request.setPage(page != null ? page : 0);
@@ -29,6 +30,7 @@ public class ArticleController {
         request.setStatus(status);
         request.setCategoryId(categoryId);
         request.setArticleType(articleType);
+        request.setTag(tag);
         
         PageResult<ArticleDTO> result = articleService.getArticleList(request);
         return ResponseEntity.ok(result);

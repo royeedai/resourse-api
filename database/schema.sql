@@ -23,13 +23,16 @@ CREATE TABLE IF NOT EXISTS articles (
     view_count INT DEFAULT 0 COMMENT '浏览量',
     status VARCHAR(20) DEFAULT 'PUBLISHED' COMMENT '状态: PUBLISHED-已发布, DRAFT-草稿, ARCHIVED-已归档',
     article_type VARCHAR(50) COMMENT '文章类型: NEWS-新闻, BLOG-博客, TUTORIAL-教程等',
+    tag VARCHAR(20) COMMENT '标签: HOT-热门, LATEST-最新',
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
     INDEX idx_category_id (category_id),
     INDEX idx_status (status),
     INDEX idx_article_type (article_type),
-    INDEX idx_create_time (create_time)
+    INDEX idx_tag (tag),
+    INDEX idx_create_time (create_time),
+    INDEX idx_view_count (view_count)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文章表';
 
 -- 创建文章图片表（多图支持）

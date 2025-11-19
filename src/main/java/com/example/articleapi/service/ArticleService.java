@@ -27,16 +27,30 @@ public class ArticleService {
     private final CategoryRepository categoryRepository;
     
     public PageResult<ArticleDTO> getArticleList(ArticleListRequest request) {
+        // 根据标签确定排序方式
+        Sort sort;
+        if ("HOT".equals(request.getTag())) {
+            // 热门：按浏览量降序
+            sort = Sort.by(Sort.Direction.DESC, "viewCount");
+        } else if ("LATEST".equals(request.getTag())) {
+            // 最新：按创建时间降序
+            sort = Sort.by(Sort.Direction.DESC, "createTime");
+        } else {
+            // 默认：按创建时间降序
+            sort = Sort.by(Sort.Direction.DESC, "createTime");
+        }
+        
         Pageable pageable = PageRequest.of(
             request.getPage(),
             request.getSize(),
-            Sort.by(Sort.Direction.DESC, "createTime")
+            sort
         );
         
         Page<Article> page = articleRepository.findByFilters(
             request.getStatus(),
             request.getCategoryId(),
             request.getArticleType(),
+            request.getTag(),
             pageable
         );
         
@@ -88,6 +102,7 @@ public class ArticleService {
         article.setImages(articleDTO.getImages());
         article.setStatus(articleDTO.getStatus());
         article.setArticleType(articleDTO.getArticleType());
+        article.setTag(articleDTO.getTag());
         
         if (articleDTO.getCategoryId() != null && 
             !articleDTO.getCategoryId().equals(article.getCategoryId())) {
@@ -122,6 +137,7 @@ public class ArticleService {
         dto.setViewCount(article.getViewCount());
         dto.setStatus(article.getStatus());
         dto.setArticleType(article.getArticleType());
+        dto.setTag(article.getTag());
         dto.setCreateTime(article.getCreateTime());
         dto.setUpdateTime(article.getUpdateTime());
         return dto;
@@ -135,6 +151,7 @@ public class ArticleService {
         article.setImages(dto.getImages() != null ? dto.getImages() : new ArrayList<>());
         article.setStatus(dto.getStatus() != null ? dto.getStatus() : "PUBLISHED");
         article.setArticleType(dto.getArticleType());
+        article.setTag(dto.getTag());
         return article;
     }
 }
