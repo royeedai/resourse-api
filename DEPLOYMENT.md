@@ -4,12 +4,152 @@
 
 ## 目录
 
+- [一键部署（推荐）](#一键部署推荐)
 - [环境要求](#环境要求)
 - [本地开发部署](#本地开发部署)
 - [生产环境部署](#生产环境部署)
 - [Docker部署](#docker部署)
 - [配置说明](#配置说明)
 - [常见问题](#常见问题)
+
+## 一键部署（推荐）
+
+项目提供了自动化部署脚本 `deploy.sh`，可以一键完成从拉取项目到启动完成的所有流程。
+
+### 快速开始
+
+#### 方式一：从Git仓库部署（推荐）
+
+```bash
+# 给脚本添加执行权限
+chmod +x deploy.sh
+
+# 一键部署（自动拉取项目、初始化数据库、编译、启动）
+./deploy.sh --git-repo https://github.com/your-username/article-api.git \
+            --db-password your_password \
+            --port 8080
+```
+
+#### 方式二：本地项目部署
+
+如果项目已经在本地，可以跳过Git拉取步骤：
+
+```bash
+./deploy.sh --skip-git-clone \
+            --db-password your_password \
+            --port 8080
+```
+
+#### 方式三：自动安装依赖
+
+如果系统缺少Java、Maven等依赖，可以使用自动安装功能（需要sudo权限）：
+
+```bash
+./deploy.sh --auto-install-deps \
+            --git-repo https://github.com/your-username/article-api.git \
+            --db-password your_password
+```
+
+### 脚本功能
+
+一键部署脚本会自动完成以下所有步骤：
+
+1. ✅ **环境检查**：检查Java、Maven、MySQL客户端是否安装
+2. ✅ **自动安装依赖**：可选自动安装缺失的依赖（需要sudo权限）
+3. ✅ **拉取项目**：从Git仓库自动拉取项目代码（可选）
+4. ✅ **数据库初始化**：自动创建数据库并执行初始化脚本
+5. ✅ **配置更新**：自动更新数据库连接和应用端口配置
+6. ✅ **项目编译**：使用Maven自动编译打包项目
+7. ✅ **服务启动**：启动应用并验证服务可用性
+
+### 脚本参数说明
+
+| 参数 | 说明 | 默认值 |
+|------|------|--------|
+| `--git-repo URL` | Git仓库地址（如果指定，将自动拉取项目） | - |
+| `--project-dir DIR` | 项目目录路径 | ./article-api |
+| `--db-host HOST` | 数据库主机地址 | localhost |
+| `--db-port PORT` | 数据库端口 | 3306 |
+| `--db-name NAME` | 数据库名称 | article_db |
+| `--db-user USER` | 数据库用户名 | root |
+| `--db-password PASSWORD` | 数据库密码 | root |
+| `--port PORT` | 应用端口 | 8080 |
+| `--skip-git-clone` | 跳过Git拉取步骤 | false |
+| `--skip-db-setup` | 跳过数据库初始化步骤 | false |
+| `--skip-build` | 跳过编译步骤 | false |
+| `--auto-install-deps` | 自动安装缺失的依赖 | false |
+| `--no-init-data` | 不导入初始测试数据 | false |
+| `--help` | 显示帮助信息 | - |
+
+### 使用环境变量
+
+也可以通过环境变量设置参数：
+
+```bash
+export DB_HOST=192.168.1.100
+export DB_USER=admin
+export DB_PASSWORD=secret
+export APP_PORT=9090
+
+./deploy.sh --git-repo https://github.com/your-username/article-api.git
+```
+
+### 完整示例
+
+```bash
+# 示例1：完整部署流程
+./deploy.sh \
+  --git-repo https://github.com/your-username/article-api.git \
+  --project-dir /opt/article-api \
+  --db-host 192.168.1.100 \
+  --db-port 3306 \
+  --db-name article_db \
+  --db-user article_user \
+  --db-password strong_password \
+  --port 8080
+
+# 示例2：本地项目快速部署
+./deploy.sh \
+  --skip-git-clone \
+  --db-password mypassword \
+  --port 9090
+
+# 示例3：生产环境部署（不导入测试数据）
+./deploy.sh \
+  --skip-git-clone \
+  --no-init-data \
+  --db-host prod-db.example.com \
+  --db-user prod_user \
+  --db-password prod_password \
+  --port 8080
+```
+
+### 注意事项
+
+1. **MySQL服务**：确保MySQL服务已启动并可访问
+2. **数据库权限**：确保数据库用户有创建数据库和表的权限
+3. **端口占用**：确保指定的应用端口未被占用
+4. **自动安装**：使用 `--auto-install-deps` 需要sudo权限，脚本会自动检测系统类型并安装依赖
+5. **配置文件备份**：脚本会自动备份原始配置文件到 `application.yml.bak`
+
+### 验证部署
+
+部署完成后，脚本会自动验证服务是否可用。你也可以手动验证：
+
+```bash
+# 检查文章列表接口
+curl http://localhost:8080/api/articles
+
+# 检查分类列表接口
+curl http://localhost:8080/api/categories
+
+# 检查应用进程
+ps aux | grep article-api
+```
+
+---
+
+**提示**：如果一键部署脚本无法满足你的需求，可以参考下面的手动部署步骤。
 
 ## 环境要求
 
