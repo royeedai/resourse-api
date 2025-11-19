@@ -124,6 +124,20 @@
         <!-- 文章接口 -->
         <h2>📝 文章接口</h2>
 
+        <!-- 标签功能说明 -->
+        <div class="api-item" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+            <h3>🏷️ 标签功能说明</h3>
+            <div class="description">
+                <p>文章支持标签功能，用于标识和筛选文章：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>HOT（热门）</strong>: 当使用 <code>tag=HOT</code> 筛选时，文章列表会按浏览量（viewCount）降序排列，显示最受欢迎的文章</li>
+                    <li><strong>LATEST（最新）</strong>: 当使用 <code>tag=LATEST</code> 筛选时，文章列表会按创建时间（createTime）降序排列，显示最新发布的文章</li>
+                    <li>标签可以作为文章属性存储，也可以仅作为筛选条件使用</li>
+                    <li>标签筛选可以与其他筛选条件（status、categoryId、articleType）组合使用</li>
+                </ul>
+            </div>
+        </div>
+
         <!-- 1. 获取文章列表 -->
         <div class="api-item">
             <div>
@@ -175,14 +189,28 @@
                             <td><span class="optional">否</span></td>
                             <td>文章类型筛选：NEWS（新闻）、BLOG（博客）、TUTORIAL（教程）等</td>
                         </tr>
+                        <tr>
+                            <td>tag</td>
+                            <td>String</td>
+                            <td><span class="optional">否</span></td>
+                            <td>标签筛选：HOT（热门，按浏览量降序）、LATEST（最新，按创建时间降序）</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
             <div>
                 <h3>请求示例</h3>
-                <div class="code-block">
-GET /api/articles?page=0&size=10&status=PUBLISHED&categoryId=1&articleType=BLOG
-                </div>
+                <div class="code-block"># 获取热门文章
+GET /api/articles?tag=HOT&page=0&size=10
+
+# 获取最新文章
+GET /api/articles?tag=LATEST&page=0&size=10
+
+# 组合筛选：获取某个分类下的热门文章
+GET /api/articles?tag=HOT&categoryId=1&status=PUBLISHED
+
+# 普通列表（默认按创建时间降序）
+GET /api/articles?page=0&size=10&status=PUBLISHED&categoryId=1&articleType=BLOG</div>
             </div>
             <div>
                 <h3>响应示例</h3>
@@ -202,6 +230,7 @@ GET /api/articles?page=0&size=10&status=PUBLISHED&categoryId=1&articleType=BLOG
       "viewCount": 100,
       "status": "PUBLISHED",
       "articleType": "TUTORIAL",
+      "tag": "HOT",
       "createTime": "2024-01-01T10:00:00",
       "updateTime": "2024-01-01T10:00:00"
     }
@@ -267,6 +296,7 @@ GET /api/articles/1
   "viewCount": 101,
   "status": "PUBLISHED",
   "articleType": "TUTORIAL",
+  "tag": "LATEST",
   "createTime": "2024-01-01T10:00:00",
   "updateTime": "2024-01-01T10:00:00"
 }</div>
@@ -336,6 +366,12 @@ GET /api/articles/1
                             <td><span class="optional">否</span></td>
                             <td>文章类型</td>
                         </tr>
+                        <tr>
+                            <td>tag</td>
+                            <td>String</td>
+                            <td><span class="optional">否</span></td>
+                            <td>标签：HOT（热门）、LATEST（最新）</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -354,7 +390,8 @@ Content-Type: application/json
   ],
   "categoryId": 1,
   "status": "PUBLISHED",
-  "articleType": "BLOG"
+  "articleType": "BLOG",
+  "tag": "HOT"
 }</div>
             </div>
         </div>
@@ -377,7 +414,8 @@ Content-Type: application/json
   "title": "更新后的标题",
   "content": "更新后的内容...",
   "images": ["https://example.com/images/new-img.jpg"],
-  "status": "PUBLISHED"
+  "status": "PUBLISHED",
+  "tag": "LATEST"
 }</div>
             </div>
         </div>

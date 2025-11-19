@@ -9,6 +9,15 @@
 
 ## 📝 文章接口
 
+### 标签功能说明
+
+文章支持标签功能，用于标识和筛选文章：
+
+- **HOT（热门）**: 当使用 `tag=HOT` 筛选时，文章列表会按浏览量（viewCount）降序排列，显示最受欢迎的文章
+- **LATEST（最新）**: 当使用 `tag=LATEST` 筛选时，文章列表会按创建时间（createTime）降序排列，显示最新发布的文章
+- 标签可以作为文章属性存储，也可以仅作为筛选条件使用
+- 标签筛选可以与其他筛选条件（status、categoryId、articleType）组合使用
+
 ### 1. 获取文章列表
 
 **接口描述**: 获取文章列表 - 支持分页和多种筛选条件
@@ -26,9 +35,20 @@
 | status | String | 否 | 状态筛选：PUBLISHED（已发布）、DRAFT（草稿）、ARCHIVED（已归档） |
 | categoryId | Long | 否 | 分类ID筛选 |
 | articleType | String | 否 | 文章类型筛选：NEWS（新闻）、BLOG（博客）、TUTORIAL（教程）等 |
+| tag | String | 否 | 标签筛选：HOT（热门，按浏览量降序）、LATEST（最新，按创建时间降序） |
 
 **请求示例**:
 ```
+# 获取热门文章
+GET /api/articles?tag=HOT&page=0&size=10
+
+# 获取最新文章
+GET /api/articles?tag=LATEST&page=0&size=10
+
+# 组合筛选：获取某个分类下的热门文章
+GET /api/articles?tag=HOT&categoryId=1&status=PUBLISHED
+
+# 普通列表（默认按创建时间降序）
 GET /api/articles?page=0&size=10&status=PUBLISHED&categoryId=1&articleType=BLOG
 ```
 
@@ -50,6 +70,7 @@ GET /api/articles?page=0&size=10&status=PUBLISHED&categoryId=1&articleType=BLOG
       "viewCount": 100,
       "status": "PUBLISHED",
       "articleType": "TUTORIAL",
+      "tag": "HOT",
       "createTime": "2024-01-01T10:00:00",
       "updateTime": "2024-01-01T10:00:00"
     }
@@ -101,6 +122,7 @@ GET /api/articles/1
   "viewCount": 101,
   "status": "PUBLISHED",
   "articleType": "TUTORIAL",
+  "tag": "LATEST",
   "createTime": "2024-01-01T10:00:00",
   "updateTime": "2024-01-01T10:00:00"
 }
@@ -127,6 +149,7 @@ GET /api/articles/1
 | categoryId | Long | 否 | 分类ID |
 | status | String | 否 | 状态，默认PUBLISHED |
 | articleType | String | 否 | 文章类型 |
+| tag | String | 否 | 标签：HOT（热门）、LATEST（最新） |
 
 **请求示例**:
 ```
@@ -143,7 +166,8 @@ Content-Type: application/json
   ],
   "categoryId": 1,
   "status": "PUBLISHED",
-  "articleType": "BLOG"
+  "articleType": "BLOG",
+  "tag": "HOT"
 }
 ```
 
@@ -166,7 +190,8 @@ Content-Type: application/json
   "title": "更新后的标题",
   "content": "更新后的内容...",
   "images": ["https://example.com/images/new-img.jpg"],
-  "status": "PUBLISHED"
+  "status": "PUBLISHED",
+  "tag": "LATEST"
 }
 ```
 
