@@ -30,11 +30,13 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("SELECT a FROM Article a WHERE " +
            "(:status IS NULL OR a.status = :status) AND " +
            "(:categoryId IS NULL OR a.categoryId = :categoryId) AND " +
-           "(:articleType IS NULL OR a.articleType = :articleType)")
+           "(:articleType IS NULL OR a.articleType = :articleType) AND " +
+           "(:tag IS NULL OR a.tag = :tag)")
     Page<Article> findByFilters(
         @Param("status") String status,
         @Param("categoryId") Long categoryId,
         @Param("articleType") String articleType,
+        @Param("tag") String tag,
         Pageable pageable
     );
     

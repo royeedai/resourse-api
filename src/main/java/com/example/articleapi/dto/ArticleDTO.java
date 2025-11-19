@@ -16,6 +16,7 @@ public class ArticleDTO {
     private Integer viewCount;
     private String status;
     private String articleType;
+    private String tag; // HOT-热门, LATEST-最新
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

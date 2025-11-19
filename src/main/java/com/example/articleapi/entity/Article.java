@@ -44,6 +44,9 @@ public class Article {
     @Column(name = "article_type", length = 50)
     private String articleType; // NEWS, BLOG, TUTORIAL, etc.
 
+    @Column(name = "tag", length = 20)
+    private String tag; // HOT-热门, LATEST-最新
+
     @Column(name = "create_time")
     private LocalDateTime createTime;
 
