@@ -85,7 +85,7 @@ class ArticleServiceTest {
         articles.add(article);
         Page<Article> page = new PageImpl<>(articles, PageRequest.of(0, 10), 1);
 
-        when(articleRepository.findByFilters(anyString(), any(), anyString(), anyString(), any(Pageable.class)))
+        when(articleRepository.findByFilters(any(), any(), any(), any(), any(Pageable.class)))
                 .thenReturn(page);
 
         // When
@@ -162,6 +162,7 @@ class ArticleServiceTest {
     void testCreateArticleWithInvalidCategory() {
         // Given
         articleDTO.setTitle("新文章标题");
+        articleDTO.setCategoryId(999L);
         when(categoryRepository.findById(999L)).thenReturn(Optional.empty());
 
         // When & Then
