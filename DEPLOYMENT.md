@@ -633,13 +633,66 @@ java -jar \
 
 ### 1. 数据库连接失败
 
-**问题**: 应用启动时提示数据库连接失败
+**问题**: 应用启动时提示数据库连接失败，例如：`Access denied for user 'root'@'localhost'`
+
+**可能原因**:
+1. 启动命令语法错误，环境变量未正确设置
+2. MySQL服务未启动
+3. 数据库连接配置不正确
+4. 数据库用户权限不足
 
 **解决方案**:
-- 检查MySQL服务是否启动
+
+**情况1：启动命令语法错误（最常见）**
+
+❌ **错误示例**:
+```bash
+export DB_USER=article_db & export DB_PASSWORD=DsjfmS4mMTacHLmX & java -jar app.jar
+```
+问题：使用 `&` 会导致命令并行执行，环境变量可能未设置就被Java进程读取。
+
+✅ **正确方式1 - 使用 && 顺序执行**:
+```bash
+export DB_USER=article_db && export DB_PASSWORD=DsjfmS4mMTacHLmX && java -jar app.jar
+```
+
+✅ **正确方式2 - 一行命令设置环境变量**:
+```bash
+DB_USER=article_db DB_PASSWORD=DsjfmS4mMTacHLmX java -jar app.jar
+```
+
+✅ **正确方式3 - 使用启动脚本**:
+```bash
+# 设置环境变量
+export DB_USER=article_db
+export DB_PASSWORD=DsjfmS4mMTacHLmX
+export DB_HOST=localhost
+export DB_PORT=3306
+export DB_NAME=article_db
+export SERVER_PORT=8083
+
+# 然后启动
+./start-prod.sh
+```
+
+✅ **正确方式4 - 生产环境完整命令**:
+```bash
+export DB_USER=article_db && \
+export DB_PASSWORD=DsjfmS4mMTacHLmX && \
+export DB_HOST=localhost && \
+export DB_PORT=3306 && \
+export DB_NAME=article_db && \
+export SERVER_PORT=8083 && \
+/www/server/java/jdk-17.0.8/bin/java -Xmx1024M -Xms256M -jar /www/wwwroot/resource/resourse-api/target/article-api-1.0.0.jar --server.port=8083
+```
+
+**注意**: Java 参数顺序应该是 `-Xmx1024M -Xms256M -jar`，而不是 `-jar -Xmx1024M -Xms256M`
+
+**情况2：其他数据库连接问题**
+- 检查MySQL服务是否启动：`systemctl status mysql` 或 `service mysql status`
 - 确认数据库连接配置正确
 - 检查防火墙设置
-- 确认数据库用户权限
+- 确认数据库用户权限：`GRANT ALL PRIVILEGES ON article_db.* TO 'article_db'@'localhost';`
 
 ### 2. 端口被占用
 
