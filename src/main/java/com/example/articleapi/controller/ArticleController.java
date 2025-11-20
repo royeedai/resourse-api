@@ -25,8 +25,8 @@ public class ArticleController {
             @RequestParam(required = false) String tag) {
         
         ArticleListRequest request = new ArticleListRequest();
-        request.setPage(page != null ? page : 0);
-        request.setSize(size != null ? size : 10);
+        request.setPage(page);
+        request.setSize(size);
         request.setStatus(status);
         request.setCategoryId(categoryId);
         request.setArticleType(articleType);
