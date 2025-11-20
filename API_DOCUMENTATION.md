@@ -319,4 +319,19 @@ Content-Type: application/json
 
 ---
 
+## 📝 注意事项
+
+1. **基础URL**: 所有接口的基础路径为 `/api`，完整URL为 `http://localhost:8080/api`
+2. **Content-Type**: 所有POST和PUT请求需要设置 `Content-Type: application/json`
+3. **分页参数**: `page` 从0开始，`size` 默认为10
+4. **自动功能**: 获取文章详情时会自动增加浏览量（viewCount）
+5. **时间格式**: 所有时间字段使用ISO 8601格式：`2024-01-01T10:00:00`
+
+## 🔗 相关文档
+
+- [项目README](README.md)
+- [部署文档](DEPLOYMENT.md)
+
+---
+
 **文档版本**: 1.0.0 | **最后更新**: 2024年
