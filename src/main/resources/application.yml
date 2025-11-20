@@ -4,8 +4,8 @@ spring:
   
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:article_db}?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    username: ${DB_USER:root}
-    password: ${DB_PASSWORD:root}
+    username: ${DB_USER:article_db}
+    password: ${DB_PASSWORD:DsjfmS4mMTacHLmX}
     driver-class-name: com.mysql.cj.jdbc.Driver
   
   jpa:
