@@ -39,4 +39,4 @@ fi
 
 # 启动应用
 echo "正在启动应用..."
-java -jar "$JAR_FILE"
+java -Xmx1024M -Xms256M -jar "$JAR_FILE" --server.port="${SERVER_PORT:-8080}"
