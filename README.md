@@ -2,6 +2,12 @@
 
 基于 Spring Boot 3 开发的文章管理API系统，提供文章列表、分类管理、文章详情等功能。
 
+## 📚 文档导航
+
+- **[API接口文档](API_DOCUMENTATION.md)** - 完整的API接口说明和使用示例
+- **[部署文档](DEPLOYMENT.md)** - 详细的部署指南，包括一键部署、手动部署、Docker部署等
+- **[API文档（HTML版）](API_DOCUMENTATION.html)** - 可在浏览器中查看的HTML格式API文档
+
 ## 项目简介
 
 本项目是一个RESTful API服务，用于管理文章和分类信息。支持文章的多图上传、多种类型筛选、分类管理等核心功能。
@@ -162,13 +168,28 @@ mvn spring-boot:run
 
 服务启动后，访问地址：`http://localhost:8080/api`
 
-## API文档
+## 📖 文档说明
 
-详细的API接口文档请参考 [API文档](API_DOCUMENTATION.html)
+### API接口文档
 
-## 部署说明
+- **Markdown版本**: [API_DOCUMENTATION.md](API_DOCUMENTATION.md) - 适合在代码仓库中查看
+- **HTML版本**: [API_DOCUMENTATION.html](API_DOCUMENTATION.html) - 适合在浏览器中查看，界面更美观
 
-详细的部署文档请参考 [部署文档](DEPLOYMENT.md)
+### 部署文档
+
+详细的部署指南请参考 [DEPLOYMENT.md](DEPLOYMENT.md)，包括：
+- 一键部署（推荐）
+- 本地开发部署
+- 生产环境部署
+- Docker部署
+- 数据库配置和问题排查
+- 常见问题解答
+
+## 🔗 快速链接
+
+- **API基础URL**: `http://localhost:8080/api`
+- **文章接口**: `/api/articles`
+- **分类接口**: `/api/categories`
 
 ## 许可证
 
