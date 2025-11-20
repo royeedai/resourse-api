@@ -10,8 +10,8 @@
 export DB_HOST="${DB_HOST:-localhost}"
 export DB_PORT="${DB_PORT:-3306}"
 export DB_NAME="${DB_NAME:-article_db}"
-export DB_USER="${DB_USER:-root}"
-export DB_PASSWORD="${DB_PASSWORD:-root}"
+export DB_USER="${DB_USER:-article_db}"
+export DB_PASSWORD="${DB_PASSWORD:-DsjfmS4mMTacHLmX}"
 export SERVER_PORT="${SERVER_PORT:-8080}"
 
 # Java 路径（根据实际环境修改）

@@ -14,8 +14,8 @@
 export DB_HOST="${DB_HOST:-localhost}"
 export DB_PORT="${DB_PORT:-3306}"
 export DB_NAME="${DB_NAME:-article_db}"
-export DB_USER="${DB_USER:-root}"
-export DB_PASSWORD="${DB_PASSWORD:-root}"
+export DB_USER="${DB_USER:-article_db}"
+export DB_PASSWORD="${DB_PASSWORD:-DsjfmS4mMTacHLmX}"
 
 echo "=========================================="
 echo "启动文章API应用"
